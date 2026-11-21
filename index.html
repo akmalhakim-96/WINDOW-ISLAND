@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Window Island</title>
+<meta name="description" content="Window Island — jadikan Windows anda lebih ringan, pantas dan futuristik. Top bar, dock, widget hidup dan Dynamic Island untuk Windows 10/11.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <a href="#" class="brand"><span class="logo"></span>Window Island</a>
+  <nav class="links" id="navLinks">
+    <a href="#ciri">Ciri</a>
+    <a href="#ringan">Prestasi</a>
+    <a href="#paket">Pakej</a>
+    <a href="#kemaskini">Kemas Kini</a>
+    <a href="#soalan">Soalan Lazim</a>
+  </nav>
+  <a href="#muat-turun" class="btn btn-sm">Muat Turun</a>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="pill">✨ Versi 2.0 “Nebula” kini tersedia</span>
+    <h1>Windows anda.<br><span class="grad">Lebih ringan. Lebih futuristik.</span></h1>
+    <p>Window Island menukar desktop Windows 10/11 kepada pengalaman moden: top bar pintar, dock beranimasi, widget hidup dan Dynamic Island — semuanya guna kurang daripada <b>60&nbsp;MB RAM</b>.</p>
+    <div class="cta">
+      <a href="#muat-turun" class="btn">⬇ Muat Turun Percuma</a>
+      <a href="#paket" class="btn btn-ghost">Lihat Pakej</a>
+    </div>
+    <ul class="stats">
+      <li><b>&lt;60MB</b><span>RAM</span></li>
+      <li><b>&lt;1%</b><span>CPU melahu</span></li>
+      <li><b>30+</b><span>widget</span></li>
+    </ul>
+  </div>
+
+  <!-- Live desktop mockup -->
+  <div class="desktop" id="desktop">
+    <div class="topbar">
+      <div class="tb-left"><span class="tb-logo">◆</span><b>Explorer</b><span>Apps</span><span>Games</span></div>
+      <div class="island" id="island" title="Klik saya">
+        <span class="island-dot"></span><span id="islandText">Halstage — terima kasih</span>
+        <span class="eq"><i></i><i></i><i></i></span>
+      </div>
+      <div class="tb-right"><span>🔊</span><span>📶</span><span>🔋 100%</span><span id="tbClock">--</span></div>
+    </div>
+
+    <div class="w weather">
+      <div class="w-head"><span>Kuala Lumpur</span><span>☀️</span></div>
+      <div class="temp">31°</div>
+      <div class="muted">Cerah · ↓24° ↑33°</div>
+      <div class="hours" id="hours"></div>
+    </div>
+
+    <div class="w clock"><canvas id="analog" width="160" height="160"></canvas></div>
+
+    <div class="w notes">
+      <div class="notes-h">Nota</div>
+      <p>“Dan Dia bersama kamu di mana saja kamu berada.”<br><small>(QS. Al-Hadid: 4)</small></p>
+    </div>
+
+    <div class="w cal">
+      <div class="cal-h" id="calTitle"></div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <div class="w music">
+      <div class="art"></div>
+      <div><b>terima kasih</b><div class="muted">Halstage</div></div>
+      <div class="bar"><i id="prog"></i></div>
+    </div>
+
+    <div class="w remind">
+      <div class="r-h"><span class="r-ico">☰</span><b id="remCount">3</b></div>
+      <div class="r-t">Peringatan</div>
+      <label><input type="checkbox"> Siapkan tugasan</label>
+      <label><input type="checkbox"> Solat Asar</label>
+      <label><input type="checkbox"> Beli barang</label>
+    </div>
+
+    <div class="dock" id="dock">
+      <span>🗂️</span><span>🧭</span><span>📝</span><span>🎨</span><span>🎵</span><span>⚙️</span><i></i><span>🗑️</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="ciri" class="section">
+  <h2>Semua yang anda lihat — <span class="grad">dan lebih lagi</span></h2>
+  <p class="lead">Dibina dari awal dengan enjin asli yang ringan. Tiada Electron, tiada proses latar yang berat.</p>
+  <div class="grid">
+    <article class="card"><div class="ico">▭</div><h3>Top Bar Pintar</h3><p>Menu aplikasi, status bateri, Wi-Fi, bunyi dan jam — sentiasa di atas, auto-sembunyi bila skrin penuh.</p></article>
+    <article class="card"><div class="ico">◉</div><h3>Dynamic Island</h3><p>Pulau hidup yang memaparkan muzik, pemasa, muat turun, panggilan dan notifikasi secara beranimasi.</p></article>
+    <article class="card"><div class="ico">⌂</div><h3>Dock Beranimasi</h3><p>Kesan magnifikasi, penunjuk aplikasi aktif, folder tindan dan sokongan pelbagai monitor.</p></article>
+    <article class="card"><div class="ico">▦</div><h3>30+ Widget Hidup</h3><p>Cuaca, kalendar, jam, nota, peringatan, muzik, CPU/RAM, waktu solat, kripto dan banyak lagi.</p></article>
+    <article class="card"><div class="ico">✦</div><h3>Tema & Kaca Cair</h3><p>Kesan kaca (glass/mica), mod gelap automatik, warna aksen ikut wallpaper.</p></article>
+    <article class="card"><div class="ico">⚡</div><h3>Mod Ringan Windows</h3><p>Satu klik untuk matikan perkhidmatan tak perlu, bloatware dan animasi berat — PC terasa baru.</p></article>
+    <article class="card"><div class="ico">⌘</div><h3>Spotlight & Pintasan</h3><p>Cari aplikasi, fail dan kira dengan pantas menggunakan <kbd>Alt</kbd>+<kbd>Space</kbd>.</p></article>
+    <article class="card new"><div class="ico">🤖</div><h3>Pembantu AI <em>Pro</em></h3><p>Susun desktop, jana tema dari wallpaper dan automasi rutin dengan arahan bahasa biasa.</p></article>
+    <article class="card new"><div class="ico">☁</div><h3>Sync Awan <em>Plus</em></h3><p>Simpan susun atur, widget dan tema anda — pulihkan pada PC lain dalam sesaat.</p></article>
+  </div>
+</section>
+
+<!-- PERFORMANCE -->
+<section id="ringan" class="section">
+  <h2>Ringan sebenar, <span class="grad">bukan sekadar cantik</span></h2>
+  <p class="lead">Penggunaan RAM purata ketika melahu (Windows 11, 8 GB RAM). Lebih rendah lebih baik.</p>
+  <div class="bars">
+    <div class="b"><span>Window Island</span><div class="track"><i style="--v:12%" class="me"></i></div><b>58 MB</b></div>
+    <div class="b"><span>Pelancar dock biasa</span><div class="track"><i style="--v:38%"></i></div><b>190 MB</b></div>
+    <div class="b"><span>Pakej widget berasaskan web</span><div class="track"><i style="--v:70%"></i></div><b>350 MB</b></div>
+    <div class="b"><span>Tema penuh + skin pihak ketiga</span><div class="track"><i style="--v:95%"></i></div><b>480 MB</b></div>
+  </div>
+  <p class="fine">*Angka sasaran dalaman untuk tujuan ilustrasi. Gantikan dengan ukuran sebenar apabila aplikasi diuji.</p>
+</section>
+
+<!-- PRICING -->
+<section id="paket" class="section">
+  <h2>Pilih pakej anda</h2>
+  <p class="lead">Mula percuma. Naik taraf bila-bila masa. Bayaran sekali seumur hidup juga tersedia.</p>
+  <div class="toggle" role="group" aria-label="Kitaran bil">
+    <button class="on" data-cycle="m">Bulanan</button>
+    <button data-cycle="y">Tahunan <em>-30%</em></button>
+    <button data-cycle="l">Seumur Hidup</button>
+  </div>
+  <div class="plans">
+    <article class="plan">
+      <h3>Free</h3>
+      <div class="price"><b>RM0</b><span>selamanya</span></div>
+      <p class="muted">Untuk mencuba rupa baharu Windows.</p>
+      <ul>
+        <li>Top bar & dock asas</li>
+        <li>6 widget teras (jam, cuaca, kalendar, nota, peringatan, muzik)</li>
+        <li>2 tema terbina</li>
+        <li>Mod Ringan asas</li>
+        <li class="no">Dynamic Island</li>
+        <li class="no">Sync awan</li>
+      </ul>
+      <a href="#muat-turun" class="btn btn-ghost">Muat Turun</a>
+    </article>
+    <article class="plan hot">
+      <span class="tag">Paling Popular</span>
+      <h3>Plus</h3>
+      <div class="price"><b data-m="RM9.90" data-y="RM6.90" data-l="RM99">RM9.90</b><span data-m="/bulan" data-y="/bulan, bil tahunan" data-l="sekali bayar">/bulan</span></div>
+      <p class="muted">Untuk pengguna harian yang mahu lebih.</p>
+      <ul>
+        <li>Semua dalam Free</li>
+        <li>Dynamic Island penuh</li>
+        <li>30+ widget & kedai tema</li>
+        <li>Mod Ringan lanjutan (debloat 1-klik)</li>
+        <li>Sync awan untuk 2 PC</li>
+        <li>Kemas kini automatik</li>
+      </ul>
+      <a href="#muat-turun" class="btn">Pilih Plus</a>
+    </article>
+    <article class="plan">
+      <h3>Pro</h3>
+      <div class="price"><b data-m="RM19.90" data-y="RM13.90" data-l="RM199">RM19.90</b><span data-m="/bulan" data-y="/bulan, bil tahunan" data-l="sekali bayar">/bulan</span></div>
+      <p class="muted">Untuk kreator & pengguna kuasa.</p>
+      <ul>
+        <li>Semua dalam Plus</li>
+        <li>Pembantu AI & tema dijana AI</li>
+        <li>Pembina widget sendiri (SDK)</li>
+        <li>Sokongan pelbagai monitor penuh</li>
+        <li>Sync awan tanpa had PC</li>
+        <li>Akses awal beta & sokongan keutamaan</li>
+      </ul>
+      <a href="#muat-turun" class="btn btn-ghost">Pilih Pro</a>
+    </article>
+  </div>
+  <p class="fine center">Jaminan wang dikembalikan 14 hari · Bayar dengan FPX, kad, Touch 'n Go eWallet</p>
+</section>
+
+<!-- CHANGELOG -->
+<section id="kemaskini" class="section">
+  <h2>Kemas Kini Terkini</h2>
+  <p class="lead">Kami mengemas kini setiap bulan. Inilah yang baru.</p>
+  <div class="log" id="log"></div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="muat-turun" class="section download">
+  <div>
+    <h2>Sedia untuk desktop masa depan?</h2>
+    <p class="lead">Windows 10 (22H2) atau Windows 11 · 64-bit · 4 GB RAM · 80 MB ruang storan</p>
+    <div class="cta">
+      <a class="btn" href="#" onclick="alert('Pautan muat turun akan tersedia selepas build pertama dikeluarkan.');return false;">⬇ Window Island 2.0 (Windows x64)</a>
+      <a class="btn btn-ghost" href="#kemaskini">Nota keluaran</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="soalan" class="section">
+  <h2>Soalan Lazim</h2>
+  <div class="faq">
+    <details><summary>Adakah Window Island akan melambatkan PC saya?</summary><p>Tidak. Ia ditulis dengan enjin asli, menggunakan sekitar 60 MB RAM dan hampir 0% CPU ketika melahu. Mod Ringan malah boleh membebaskan lebih banyak sumber daripada yang digunakan.</p></details>
+    <details><summary>Adakah ia selamat? Adakah fail sistem diubah?</summary><p>Tiada fail sistem diganti. Semua perubahan boleh dipulihkan dengan satu butang “Pulihkan Asal”, dan titik pemulihan dicipta sebelum Mod Ringan dijalankan.</p></details>
+    <details><summary>Apa beza Free, Plus dan Pro?</summary><p>Free memberi top bar, dock dan 6 widget teras. Plus menambah Dynamic Island, 30+ widget, debloat lanjutan dan sync awan. Pro menambah AI, SDK widget dan sync tanpa had.</p></details>
+    <details><summary>Boleh guna lesen pada berapa PC?</summary><p>Plus: 2 PC. Pro: tanpa had untuk kegunaan peribadi.</p></details>
+    <details><summary>Boleh saya batalkan langganan?</summary><p>Ya, bila-bila masa. Anda kekal dengan ciri berbayar hingga hujung tempoh bil, kemudian kembali ke Free.</p></details>
+    <details><summary>Bolehkah saya guna wallpaper anime sendiri?</summary><p>Boleh — sebarang imej atau video (wallpaper hidup) disokong, dan warna aksen akan menyesuaikan secara automatik.</p></details>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="brand"><span class="logo"></span>Window Island</div>
+  <p>© <span id="yr"></span> Window Island. Dibina di Malaysia 🇲🇾 · Windows ialah tanda dagangan Microsoft Corporation; projek ini tidak bergabung dengan Microsoft.</p>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
