@@ -73,7 +73,7 @@ namespace WindowIsland.Core
         public static readonly string Dir = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WindowIsland");
         static readonly string FilePath = System.IO.Path.Combine(Dir, "config.json");
-        static readonly JsonSerializerOptions Opts = new() { WriteIndented = true, AllowTrailingCommas = true, ReadCommentHandling = JsonCommentHandling.Skip };
+        static readonly JsonSerializerOptions Opts = new() { WriteIndented = true, AllowTrailingCommas = true, ReadCommentHandling = JsonCommentHandling.Skip, NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals };
 
         public static AppConfig Current { get; private set; } = new AppConfig();
         public static event Action Changed;

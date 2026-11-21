@@ -116,9 +116,11 @@ namespace WindowIsland.Widgets
             ("system", "Prestasi Sistem", false),
         };
 
-        // Flow order: left side grows to the right, right side grows to the left.
-        static readonly string[] LeftFlow = { "weather", "clock", "reminders" };
-        static readonly string[] RightFlow = { "today", "prayer", "system" };
+        // Placement priority (largest first) and the corner each widget prefers.
+        static readonly (string Id, bool Right)[] Order =
+        {
+            ("today", true), ("weather", false), ("prayer", true), ("clock", false), ("reminders", false), ("system", true),
+        };
 
         static readonly Dictionary<string, WidgetWindow> Open = new();
         static DispatcherTimer _arrangeTimer;
@@ -221,7 +223,7 @@ namespace WindowIsland.Widgets
         static Rect NotchZone()
         {
             if (!Config.Current.ShowTopBar) return Rect.Empty;
-            double w = 480, h = 180;
+            double w = 260, h = 44;
             return new Rect((SystemParameters.PrimaryScreenWidth - w) / 2, 0, w, h);
         }
 
@@ -254,12 +256,27 @@ namespace WindowIsland.Widgets
                 else s.Manual = false; // screen changed or now overlaps: let the layout handle it
             }
 
-            // 2) Everything else flows into columns.
-            Flow(LeftFlow, usable, notch, taken, fromRight: false);
-            Flow(RightFlow, usable, notch, taken, fromRight: true);
+            // 2) Everything else: closest free spot to its home corner, filling down the screen edge first.
+            foreach (var (id, right) in Order)
+            {
+                if (!Open.TryGetValue(id, out var w) || Config.Widget(id).Manual || w.ActualHeight <= 0) continue;
+                var size = new Size(w.Card.Width, w.Card.Height);
+                var anchor = new Rect(right ? usable.Right - size.Width : usable.Left, usable.Top, size.Width, size.Height);
+                var spot = Nearest(anchor, usable, notch, taken, preferVertical: true);
+                if (spot == null)
+                {
+                    // Screen genuinely full: hide rather than overlap. Comes back when there is room.
+                    w.Visibility = Visibility.Hidden;
+                    Log.Info("Widget tidak muat, disembunyikan sementara: " + id);
+                    continue;
+                }
+                if (w.Visibility != Visibility.Visible) w.Visibility = Visibility.Visible;
+                taken.Add(spot.Value);
+                w.MoveCardTo(spot.Value.TopLeft);
+            }
 
             Log.Info("Layout usable=" + R(usable) + " notch=" + (notch.IsEmpty ? "-" : R(notch)) + " | " +
-                     string.Join(" ", Open.Values.Where(w => w.ActualHeight > 0).Select(w => w.Id + "=" + R(w.Card))));
+                     string.Join(" ", Open.Values.Where(w => w.ActualHeight > 0 && w.Visibility == Visibility.Visible).Select(w => w.Id + "=" + R(w.Card))));
 
             foreach (var w in Open.Values)
                 if (w.Opacity < 1 && w.ActualHeight > 0)
@@ -268,46 +285,17 @@ namespace WindowIsland.Widgets
 
         static string R(Rect r) => FormattableString.Invariant($"{r.X:0},{r.Y:0},{r.Width:0},{r.Height:0}");
 
-        static void Flow(string[] order, Rect usable, Rect notch, List<Rect> taken, bool fromRight)
-        {
-            double colX = fromRight ? usable.Right : usable.Left;
-            double colWidth = 0, y = usable.Top;
-            foreach (var id in order)
-            {
-                if (!Open.TryGetValue(id, out var w) || Config.Widget(id).Manual || w.ActualHeight <= 0) continue;
-                var size = new Size(w.Card.Width, w.Card.Height);
-                Rect? spot = null;
-                for (int guard = 0; guard < 4000 && spot == null; guard++)
-                {
-                    if (y + size.Height > usable.Bottom)
-                    {
-                        // column full: start the next column inward
-                        colX = fromRight ? colX - colWidth - Gap : colX + colWidth + Gap;
-                        colWidth = 0; y = usable.Top;
-                        if (fromRight ? colX - size.Width < usable.Left : colX + size.Width > usable.Right) break;
-                    }
-                    var r = new Rect(fromRight ? colX - size.Width : colX, y, size.Width, size.Height);
-                    if (Fits(r, usable, notch, taken)) spot = r;
-                    else y += 8;
-                }
-                var final = spot ?? Nearest(new Rect(fromRight ? usable.Right - size.Width : usable.Left, usable.Top, size.Width, size.Height), usable, notch, taken) ?? new Rect(new Point(usable.Left, usable.Top), size);
-                taken.Add(final);
-                w.MoveCardTo(final.TopLeft);
-                y = final.Bottom + Gap;
-                colWidth = Math.Max(colWidth, size.Width);
-            }
-        }
-
         /// <summary>Closest free spot to the wanted rectangle (searched on a 16px grid).</summary>
-        static Rect? Nearest(Rect want, Rect usable, Rect notch, List<Rect> taken)
+        static Rect? Nearest(Rect want, Rect usable, Rect notch, List<Rect> taken, bool preferVertical = false)
         {
+            double wx = preferVertical ? 4 : 1; // moving sideways costs more: stack along the edge first
             Rect? best = null;
             double bestD = double.MaxValue;
             const double step = 16;
             for (double y = usable.Top; y + want.Height <= usable.Bottom; y += step)
                 for (double x = usable.Left; x + want.Width <= usable.Right; x += step)
                 {
-                    double d = (x - want.X) * (x - want.X) + (y - want.Y) * (y - want.Y);
+                    double d = wx * (x - want.X) * (x - want.X) + (y - want.Y) * (y - want.Y);
                     if (d >= bestD) continue;
                     var r = new Rect(x, y, want.Width, want.Height);
                     if (Fits(r, usable, notch, taken)) { best = r; bestD = d; }
@@ -320,14 +308,13 @@ namespace WindowIsland.Widgets
         {
             var usable = Usable();
             var notch = NotchZone();
-            var others = Open.Values.Where(o => o != w && o.ActualHeight > 0).Select(o => o.Card).ToList();
+            var others = Open.Values.Where(o => o != w && o.ActualHeight > 0 && o.IsVisible).Select(o => o.Card).ToList();
             var r = w.Card;
             if (!Fits(r, usable, notch, others))
             {
                 var free = Nearest(r, usable, notch, others);
                 if (free != null)
                 {
-                    var from = w.Card.TopLeft;
                     w.MoveCardTo(free.Value.TopLeft);
                 }
             }
