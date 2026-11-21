@@ -4,25 +4,13 @@ const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
 // ---- Changelog data (edit here to publish a new update) ----
 const CHANGELOG = [
-  { v: "2.0.0", name: "Nebula", date: "2026-11-15", items: [
-    ["new", "Dynamic Island: muzik, pemasa, muat turun & notifikasi"],
-    ["new", "Pembantu AI (Pro) — jana tema daripada wallpaper"],
-    ["new", "Sync awan untuk susun atur & widget"],
-    ["imp", "Penggunaan RAM turun 35% (kini ~58 MB)"],
-  ]},
-  { v: "1.8.2", name: "", date: "2026-10-20", items: [
-    ["new", "Widget waktu solat dengan lokasi automatik (JAKIM)"],
-    ["imp", "Dock menyokong pelbagai monitor"],
-    ["fix", "Top bar tidak lagi menutup permainan skrin penuh"],
-  ]},
-  { v: "1.8.0", name: "Aurora", date: "2026-09-28", items: [
-    ["new", "Mod Ringan: debloat 1-klik dengan titik pemulihan"],
-    ["new", "Spotlight (Alt+Space) untuk cari apl & fail"],
-    ["imp", "Kesan kaca lebih licin pada GPU bersepadu"],
-  ]},
-  { v: "1.7.4", name: "", date: "2026-08-30", items: [
-    ["fix", "Kalendar tersalah hari pada zon waktu UTC+8"],
-    ["fix", "Widget cuaca tidak dikemas kini selepas sleep"],
+  { v: "1.0.0", name: "Pelancaran", date: "2026-11-21", items: [
+    ["new", "Notch & Dynamic Island: muzik, notifikasi, waktu solat, CPU/RAM & internet"],
+    ["new", "Dock gaya Mac dengan pembesaran licin, app aktif & ganti taskbar"],
+    ["new", "6 widget desktop: Hari Ini & Nota, Cuaca, Jam, Waktu Solat, Peringatan, Sistem"],
+    ["new", "Waktu solat offline (kaedah JAKIM) dengan makluman di notch"],
+    ["new", "Peringatan bermasa (cth. “Mesyuarat @3pm”) & lampu privasi kamera/mikrofon"],
+    ["new", "4 susun atur & 6 tema warna; semakan kemas kini automatik"],
   ]},
 ];
 const LABEL = { new: "BARU", imp: "BAIK PULIH", fix: "PEMBAIKAN" };
@@ -32,13 +20,6 @@ $("#log").innerHTML = CHANGELOG.map(e => `
     <time datetime="${e.date}">${new Date(e.date).toLocaleDateString("ms-MY", { day: "numeric", month: "long", year: "numeric" })}</time></header>
     <ul>${e.items.map(([t, s]) => `<li><span class="chip ${t}">${LABEL[t]}</span>${s}</li>`).join("")}</ul>
   </article>`).join("");
-
-// ---- Pricing toggle ----
-$$(".toggle button").forEach(b => b.onclick = () => {
-  $$(".toggle button").forEach(x => x.classList.toggle("on", x === b));
-  const c = b.dataset.cycle;
-  $$(".price [data-m]").forEach(el => el.textContent = el.dataset[c]);
-});
 
 // ---- Mobile menu ----
 $("#menuBtn").onclick = () => $("#navLinks").classList.toggle("open");
@@ -96,7 +77,5 @@ dock.addEventListener("mousemove", e => icons2.forEach(ic => {
 }));
 dock.addEventListener("mouseleave", () => icons2.forEach(ic => ic.style.transform = ""));
 
-// ---- Performance bars animate on view ----
-new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("go"); o.disconnect(); } }), { threshold: .4 }).observe($(".bars"));
 
 $("#yr").textContent = new Date().getFullYear();
