@@ -1,0 +1,116 @@
+<Window x:Class="WindowIsland.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Window Island — Tetapan" Width="860" Height="600" MinWidth="720" MinHeight="480"
+        WindowStartupLocation="CenterScreen" Background="#FF121218" Foreground="#FFF4F4F8"
+        FontFamily="{StaticResource UiFont}" FontSize="14">
+    <Window.Resources>
+        <!-- iOS-style switch for every CheckBox in settings -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#FFF4F4F8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,6"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <DockPanel Background="Transparent">
+                            <Border x:Name="track" DockPanel.Dock="Right" Width="42" Height="24" CornerRadius="12" Background="#FF3A3A46" Margin="16,0,0,0">
+                                <Ellipse x:Name="knob" Width="18" Height="18" Fill="White" HorizontalAlignment="Left" Margin="3,0"/>
+                            </Border>
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </DockPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="track" Property="Background" Value="{DynamicResource Accent}"/>
+                                <Setter TargetName="knob" Property="HorizontalAlignment" Value="Right"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Primary" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{DynamicResource Accent}"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,4,8,4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Opacity" Value="0.85"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Secondary" TargetType="Button" BasedOn="{StaticResource Primary}">
+            <Setter Property="Background" Value="#FF2A2A36"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#FF22222C"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="CaretBrush" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FF34343F"/>
+            <Setter Property="Padding" Value="8,6"/>
+        </Style>
+        <Style x:Key="Nav" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="b" CornerRadius="10" Padding="{TemplateBinding Padding}" Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Background" Value="#14FFFFFF"/></Trigger>
+                            <Trigger Property="IsSelected" Value="True"><Setter TargetName="b" Property="Background" Value="#26FFFFFF"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Background="#FF17171F" Padding="14,18">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="6,0,0,18">
+                    <Border Width="28" Height="28" CornerRadius="8" Margin="0,0,10,0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF22D3EE" Offset="0"/>
+                                <GradientStop Color="#FF8B7CFF" Offset="0.55"/>
+                                <GradientStop Color="#FFF472B6" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <TextBlock Text="Window Island" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock DockPanel.Dock="Bottom" x:Name="VersionText" Opacity="0.5" FontSize="12" Margin="8,0"/>
+                <ListBox x:Name="Nav" Background="Transparent" BorderThickness="0" Foreground="#FFF4F4F8"
+                         ItemContainerStyle="{StaticResource Nav}" SelectionChanged="Nav_SelectionChanged"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+            </DockPanel>
+        </Border>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Padding="32,26">
+            <StackPanel x:Name="Page" MaxWidth="560" HorizontalAlignment="Left"/>
+        </ScrollViewer>
+    </Grid>
+</Window>
