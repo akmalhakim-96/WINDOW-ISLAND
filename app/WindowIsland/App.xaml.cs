@@ -102,24 +102,33 @@ namespace WindowIsland
         public void ApplyLayout()
         {
             var c = Config.Current;
-            try
+            // Each part is isolated: if one fails, the others still appear.
+            Safe("Bar", () =>
             {
                 if (c.FullBar) { if (_bar == null) { _bar = new TopBarWindow(); _bar.Show(); } }
                 else { _bar?.CloseBar(); _bar = null; }
-
+            });
+            Safe("Island", () =>
+            {
                 if (c.ShowTopBar) { if (_island == null) { _island = new IslandWindow(); _island.Show(); } _island.ApplyMode(); }
                 else { _island?.Close(); _island = null; }
-
+            });
+            Safe("Dock", () =>
+            {
                 if (c.ShowDock) { if (_dock == null) { _dock = new DockWindow(); _dock.Show(); } _dock.Rebuild(); }
                 else { _dock?.Close(); _dock = null; }
-
-                SystemControl.ApplyTaskbar(c.HideTaskbar && c.ShowDock);
-                WidgetManager.Apply();
-            }
-            catch (Exception ex) { Log.Error("ApplyLayout", ex); }
+            });
+            Safe("Taskbar", () => SystemControl.ApplyTaskbar(c.HideTaskbar && c.ShowDock));
+            Safe("Widgets", WidgetManager.Apply);
         }
 
-        public void RefreshDock() => _dock?.Rebuild();
+        static void Safe(string what, Action a)
+        {
+            try { a(); }
+            catch (Exception ex) { Log.Error(what, ex); }
+        }
+
+        public void RefreshDock() { _dock?.Rebuild(); WidgetManager.RequestArrange(); }
 
         /// <summary>Explorer restarted: re-hide the taskbar and re-dock the bar.</summary>
         public void OnTaskbarCreated()

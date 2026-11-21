@@ -20,6 +20,8 @@ namespace WindowIsland.Core
         public bool Visible { get; set; } = true;
         public double X { get; set; } = double.NaN;
         public double Y { get; set; } = double.NaN;
+        /// <summary>True once the user dragged it; otherwise the layout engine places it.</summary>
+        public bool Manual { get; set; }
     }
 
     public class ReminderItem

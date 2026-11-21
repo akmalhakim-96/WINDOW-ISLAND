@@ -51,6 +51,7 @@ namespace WindowIsland.Shell
             _leaveTimer.Tick += (_, __) => { _leaveTimer.Stop(); if (!_hover && !_pinned && _state == State.Expanded) Go(State.Compact); };
             _alertTimer.Tick += (_, __) => { _alertTimer.Stop(); NextAlert(); };
 
+            BuildEq(); // must exist before the first Tick/UpdateMedia
             _clock.Tick += (_, __) => Tick();
             Tick();
             _clock.Start();
@@ -70,7 +71,6 @@ namespace WindowIsland.Shell
             PrivacyMonitor.Changed += UpdatePrivacy;
             FullscreenWatcher.Changed += fs => Visibility = fs ? Visibility.Hidden : Visibility.Visible;
 
-            BuildEq();
             UpdateMedia();
         }
 
@@ -207,7 +207,7 @@ namespace WindowIsland.Shell
             }
             bool playing = m.HasMedia && m.IsPlaying;
             Eq.Visibility = playing ? Visibility.Visible : Visibility.Collapsed;
-            if (playing) _eqAnim.Begin(this, true); else _eqAnim.Stop(this);
+            if (_eqAnim != null) { if (playing) _eqAnim.Begin(this, true); else _eqAnim.Stop(this); }
             UpdateCompactRight();
         }
 
